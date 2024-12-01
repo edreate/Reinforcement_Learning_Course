@@ -6,8 +6,8 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "gymnasium",
-    "install",
     "matplotlib",
+    "jupyter",
     "numpy",
     "ruff",
     "torch",
