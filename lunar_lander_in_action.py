@@ -1,3 +1,18 @@
+"""
+Lunar Lander Visualization and Model Execution Script
+
+This script is designed to visualize and run the Lunar Lander v3 environment 
+using a fixed PolicyNetwork architecture. The PolicyNetwork will be trained 
+using various reinforcement learning algorithms (off-policy and on-policy), 
+such as DQN, VPG, PPO, and SAC. The architecture of the PolicyNetwork will 
+remain consistent across all experiments.
+
+Key Features:
+- Pygame-based visualization for rendering the environment.
+- Supports loading pre-trained PolicyNetwork models for evaluation.
+- Designed for training with multiple RL algorithms while keeping 
+  the network architecture fixed.
+"""
 
 import torch
 import gymnasium as gym
@@ -5,6 +20,7 @@ import pygame
 import numpy as np
 from pathlib import Path
 from typing import Tuple, Type
+from models import PolicyNetwork
 
 
 class LunarLanderVisualizer:
@@ -47,14 +63,12 @@ class LunarLanderVisualizer:
         """Quits the Pygame environment."""
         pygame.quit()
 
-
-def load_model(filename: Path, model_class: Type[torch.nn.Module], n_observations: int, n_actions: int) -> torch.nn.Module:
+def load_model(filename: Path, n_observations: int, n_actions: int) -> torch.nn.Module:
     """
-    Loads a model of the specified class with given parameters.
-    
+    Loads a PolicyNetwork with the given parameters.
+
     Args:
         filename (Path): Path to the saved model file.
-        model_class (Type[torch.nn.Module]): The class of the model to load.
         n_observations (int): Number of observations (input features).
         n_actions (int): Number of actions (output features).
 
@@ -62,12 +76,12 @@ def load_model(filename: Path, model_class: Type[torch.nn.Module], n_observation
         torch.nn.Module: Loaded model instance.
     """
     try:
-        model = model_class(n_observations, n_actions)
-        model.load_state_dict(torch.load(filename))
+        model = PolicyNetwork(n_observations, n_actions)
+        model.load_state_dict(torch.load(filename, map_location=torch.device('cpu'),weights_only=True))
         model.eval()
         return model
     except Exception as e:
-        raise RuntimeError(f"Error loading model: {e}")
+        raise RuntimeError(f"Error loading model: {e}") from e
 
 
 def select_action(state: torch.Tensor, model: torch.nn.Module) -> torch.Tensor:
@@ -122,21 +136,9 @@ def run_lunar_lander(model: torch.nn.Module, render_fps: int = 20):
     env.close()
     visualizer.quit()
 
-import torch.nn as nn
-class MLP(nn.Module):
-    def __init__(self, num_inputs: int, num_outputs: int) -> None:
-        super().__init__()
-
-        self.net = nn.Sequential(
-            nn.Linear(num_inputs, 256), nn.ReLU(), nn.Linear(256, 256), nn.ReLU(), nn.Linear(256, num_outputs)
-        )
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return self.net(x)
 
 if __name__ == "__main__":
     MODEL_FILE_PATH = Path("output/policy_network_lunar_lander_v3_bs_16_2024-12-01_17-03-50_very_good.pth")
-    MODEL_CLASS = MLP  # Replace with DQN or other model class as needed
 
     # Initialize the environment to get observation and action space sizes
     env = gym.make("LunarLander-v3")
@@ -144,9 +146,5 @@ if __name__ == "__main__":
     n_actions = env.action_space.n
     env.close()
 
-    policy_net = load_model(MODEL_FILE_PATH, MODEL_CLASS, n_observations, n_actions)
+    policy_net = load_model(MODEL_FILE_PATH, n_observations, n_actions)
     run_lunar_lander(policy_net)
-
-
-    env.close()
-
