@@ -137,8 +137,66 @@ def run_lunar_lander(model: torch.nn.Module, render_fps: int = 20):
     visualizer.quit()
 
 
+
+def benchmark_model(
+    model: torch.nn.Module,
+    n_episodes: int = 100,
+    max_steps: int = 1000
+):
+    """
+    Benchmarks the model over multiple episodes and computes average performance metrics.
+
+    Args:
+        model (torch.nn.Module): Trained model for action selection.
+        n_episodes (int): Number of episodes to run for benchmarking.
+        max_steps (int): Maximum steps allowed per episode.
+
+    Returns:
+        dict: Average metrics (reward, steps, efficiency).
+    """
+    env = gym.make("LunarLander-v3")
+    total_rewards = []
+    total_steps = []
+    score_efficiencies = []
+
+    for episode in range(n_episodes):
+        state, _ = env.reset()
+        state_tensor = torch.tensor(state, dtype=torch.float32).unsqueeze(0)
+        cumulative_reward = 0
+        steps = 0
+        done = False
+
+        while not done and steps < max_steps:
+            action = select_action(state_tensor, model)
+            observation, reward, terminated, truncated, _ = env.step(action.item())
+            state_tensor = torch.tensor(observation, dtype=torch.float32).unsqueeze(0)
+
+            cumulative_reward += reward
+            steps += 1
+            done = terminated or truncated
+
+        total_rewards.append(cumulative_reward)
+        total_steps.append(steps)
+        score_efficiencies.append(cumulative_reward / steps)
+
+        print(f"Episode {episode + 1}/{n_episodes} -> Reward: {cumulative_reward:.2f}, Steps: {steps}")
+
+    env.close()
+
+    # Compute averages
+    avg_reward = np.mean(total_rewards)
+    avg_steps = np.mean(total_steps)
+    avg_efficiency = np.mean(score_efficiencies)
+
+    return {
+        "Average Reward": avg_reward,
+        "Average Steps": avg_steps,
+        "Average Efficiency": avg_efficiency
+    }
+
+
 if __name__ == "__main__":
-    MODEL_FILE_PATH = Path("output/policy_network_lunar_lander_v3_bs_16_2024-12-01_17-03-50_very_good.pth")
+    MODEL_FILE_PATH = Path("output/dqn_policy_network_lunar_lander_v3_2024-12-02_19-36-49.pth")
 
     # Initialize the environment to get observation and action space sizes
     env = gym.make("LunarLander-v3")
@@ -146,5 +204,15 @@ if __name__ == "__main__":
     n_actions = env.action_space.n
     env.close()
 
+    # Load the model
     policy_net = load_model(MODEL_FILE_PATH, n_observations, n_actions)
-    run_lunar_lander(policy_net)
+
+    # Run benchmarking
+    metrics = benchmark_model(policy_net, n_episodes=100)
+    print("\nBenchmark Results:")
+    for metric, value in metrics.items():
+        print(f"{metric}: {value:.2f}")
+
+
+
+    # run_lunar_lander(policy_net)
