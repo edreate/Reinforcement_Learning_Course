@@ -196,7 +196,7 @@ def benchmark_model(
 
 
 if __name__ == "__main__":
-    MODEL_FILE_PATH = Path("output/dqn_policy_network_lunar_lander_v3_2024-12-02_19-36-49.pth")
+    MODEL_FILE_PATH = Path("output/policy_network_lunar_lander_v3_bs_16_2024-12-04_03-50-55.pth")
 
     # Initialize the environment to get observation and action space sizes
     env = gym.make("LunarLander-v3")
@@ -207,12 +207,12 @@ if __name__ == "__main__":
     # Load the model
     policy_net = load_model(MODEL_FILE_PATH, n_observations, n_actions)
 
-    # Run benchmarking
-    metrics = benchmark_model(policy_net, n_episodes=100)
-    print("\nBenchmark Results:")
-    for metric, value in metrics.items():
-        print(f"{metric}: {value:.2f}")
+    # # Run benchmarking
+    # metrics = benchmark_model(policy_net, n_episodes=100)
+    # print("\nBenchmark Results:")
+    # for metric, value in metrics.items():
+    #     print(f"{metric}: {value:.2f}")
 
 
 
-    # run_lunar_lander(policy_net)
+    run_lunar_lander(policy_net)
