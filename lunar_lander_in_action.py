@@ -20,7 +20,7 @@ import pygame
 import numpy as np
 from pathlib import Path
 from typing import Tuple, Type
-from models import PolicyNetwork
+from models.models import PolicyNetwork
 
 
 class LunarLanderVisualizer:
@@ -190,7 +190,7 @@ def benchmark_model(model: torch.nn.Module, n_episodes: int = 100, max_steps: in
 
 
 if __name__ == "__main__":
-    MODEL_FILE_PATH = Path("output/policy_network_lunar_lander_v3_bs_16_2024-12-04_03-50-55.pth")
+    MODEL_FILE_PATH = Path("output/dqn_policy_network_lunar_lander_v3_2024-12-02_19-36-49.pth")
 
     # Initialize the environment to get observation and action space sizes
     env = gym.make("LunarLander-v3")

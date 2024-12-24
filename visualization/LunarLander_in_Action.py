@@ -88,7 +88,7 @@ def run_and_control_lunar_lander(
 
 if __name__ == "__main__":
     MODEL_FILE_PATH = Path(
-        "pre_trained_models/sac_continuous_lunar_lander_training_2024-12-24_14-56-49/policy_network.pth"
+        "pre_trained_models/sac_continuous_lunar_lander_training_2024-12-24_15-07-05/policy_network.pth"
     )
     MODEL_CLASS = ActorNetwork
     CONTINUOUS = True
