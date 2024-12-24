@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Type
 from Visualizer import PygameVisualizer
 import torch.nn as nn
-from SAC import ActorNetwork
+from models.SAC import ActorNetwork
 
 
 def load_model(
@@ -87,7 +87,9 @@ def run_and_control_lunar_lander(
 
 
 if __name__ == "__main__":
-    MODEL_FILE_PATH = Path("output/sac_continuous_lunar_lander_training_2024-12-23_12-52-16/policy_network.pth")
+    MODEL_FILE_PATH = Path(
+        "pre_trained_models/sac_continuous_lunar_lander_training_2024-12-24_14-56-49/policy_network.pth"
+    )
     MODEL_CLASS = ActorNetwork
     CONTINUOUS = True
 

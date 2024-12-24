@@ -1,4 +1,8 @@
 swig
-gynasium[box2d]
+gymnasium[box2d]
 matplotlib
 torch
+jupyter
+pygame
+ruff
+tqdm

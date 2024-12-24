@@ -126,3 +126,95 @@ By engaging with this repository, you will:
 This repository was created to help RL enthusiasts gain practical knowledge and implement foundational concepts. It is inspired by the open-source community and designed to accelerate your learning journey.
 
 Happy learning! 🚀
+
+
+# Reinforcement Learning Course
+
+This repository contains materials for the Reinforcement Learning course, including code for training and visualizing models in environments like Lunar Lander.
+
+## Setup Instructions
+
+Follow these steps to set up the environment and run inference:
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/edreate/Reinforcement_Learning_Course.git
+cd Reinforcement_Learning_Course
+```
+
+### 2. Install Python Virtual Environment Tools (if not already installed) 
+
+
+```bash
+sudo apt install python3.10-venv
+```
+
+### 3. Create and Activate a Virtual Environment 
+
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### 4. Install Required Dependencies 
+
+
+```bash
+pip install -r requirements.txt
+```
+
+### 5. Additional Setup 
+Install the `ipython` kernel for working with Jupyter notebooks:
+
+```bash
+ipython kernel install --name "local-venv" --user
+```
+
+Install additional tools for formatting and visualization:
+
+
+```bash
+pip install pygame tqdm ruff
+```
+6. Set the `PYTHONPATH`Ensure the repository is correctly added to the `PYTHONPATH`:
+
+```bash
+export PYTHONPATH=$(pwd)
+```
+
+## Running Inference 
+
+To visualize the Lunar Lander environment in action, use the provided script:
+
+
+```bash
+python visualization/LunarLander_in_Action.py
+```
+
+## Code Formatting 
+
+Run the formatting tools to maintain consistent code style:
+
+
+```bash
+make format
+```
+
+## Notes 
+ 
+- Ensure you activate the virtual environment (`source venv/bin/activate`) each time you start working in the repository.
+ 
+- The `PYTHONPATH` should be set whenever a new terminal session is started, or you can add it to your shell configuration file for persistence.
+
+## Troubleshooting 
+
+If you encounter issues, ensure:
+
+- The virtual environment is activated.
+
+- All dependencies are installed.
+ 
+- The `PYTHONPATH` is correctly set.
+
+Happy learning and experimenting with reinforcement learning!

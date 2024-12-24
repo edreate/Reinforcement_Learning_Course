@@ -24,11 +24,7 @@ class PolicyNetwork(nn.Module):
         super().__init__()
 
         self.net = nn.Sequential(
-            nn.Linear(num_inputs, 256),
-            nn.ReLU(),
-            nn.Linear(256, 256),
-            nn.ReLU(),
-            nn.Linear(256, num_outputs)
+            nn.Linear(num_inputs, 256), nn.ReLU(), nn.Linear(256, 256), nn.ReLU(), nn.Linear(256, num_outputs)
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
