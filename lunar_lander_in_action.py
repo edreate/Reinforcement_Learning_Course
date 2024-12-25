@@ -14,12 +14,14 @@ Key Features:
   the network architecture fixed.
 """
 
-import torch
-import gymnasium as gym
-import pygame
-import numpy as np
 from pathlib import Path
 from typing import Tuple, Type
+
+import gymnasium as gym
+import numpy as np
+import pygame
+import torch
+
 from models.models import PolicyNetwork
 
 

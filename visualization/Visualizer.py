@@ -1,6 +1,7 @@
-import pygame
 from typing import Tuple
+
 import numpy as np
+import pygame
 from numpy.typing import NDArray
 
 

@@ -1,9 +1,11 @@
-import torch
-import gymnasium as gym
 from pathlib import Path
 from typing import Type
-from Visualizer import PygameVisualizer
+
+import gymnasium as gym
+import torch
 import torch.nn as nn
+from Visualizer import PygameVisualizer
+
 from models.SAC import ActorNetwork
 
 

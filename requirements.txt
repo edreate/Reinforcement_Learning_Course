@@ -4,5 +4,7 @@ matplotlib
 torch
 jupyter
 pygame
-ruff
 tqdm
+ruff
+isort
+nbqa

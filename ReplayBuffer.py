@@ -1,5 +1,6 @@
 from collections import deque, namedtuple
-from typing import Deque, Tuple, List
+from typing import Deque, List, Tuple
+
 import numpy as np
 from numpy.typing import NDArray
 

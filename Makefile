@@ -7,3 +7,9 @@ format-cpp:
 	clear
 	@echo "Formatting c++ code"
 	find src/ \( -name "*.cpp" -o -name "*.hpp" \) -exec clang-format -i {} +
+
+order-imports:
+	clear
+	@echo "Ordering imports"
+	isort .
+	nbqa isort .
