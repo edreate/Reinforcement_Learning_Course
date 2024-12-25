@@ -1,26 +1,28 @@
 """
 Lunar Lander Visualization and Model Execution Script
 
-This script is designed to visualize and run the Lunar Lander v3 environment 
-using a fixed PolicyNetwork architecture. The PolicyNetwork will be trained 
-using various reinforcement learning algorithms (off-policy and on-policy), 
-such as DQN, VPG, PPO, and SAC. The architecture of the PolicyNetwork will 
+This script is designed to visualize and run the Lunar Lander v3 environment
+using a fixed PolicyNetwork architecture. The PolicyNetwork will be trained
+using various reinforcement learning algorithms (off-policy and on-policy),
+such as DQN, VPG, PPO, and SAC. The architecture of the PolicyNetwork will
 remain consistent across all experiments.
 
 Key Features:
 - Pygame-based visualization for rendering the environment.
 - Supports loading pre-trained PolicyNetwork models for evaluation.
-- Designed for training with multiple RL algorithms while keeping 
+- Designed for training with multiple RL algorithms while keeping
   the network architecture fixed.
 """
 
-import torch
-import gymnasium as gym
-import pygame
-import numpy as np
 from pathlib import Path
 from typing import Tuple, Type
-from models import PolicyNetwork
+
+import gymnasium as gym
+import numpy as np
+import pygame
+import torch
+
+from models.models import PolicyNetwork
 
 
 class LunarLanderVisualizer:
@@ -40,7 +42,9 @@ class LunarLanderVisualizer:
         self.clock = pygame.time.Clock()
         self.font = pygame.font.Font(None, 24)
 
-    def overlay_info(self, text: str, position: Tuple[int, int] = (10, 10), color: Tuple[int, int, int] = (255, 255, 255)):
+    def overlay_info(
+        self, text: str, position: Tuple[int, int] = (10, 10), color: Tuple[int, int, int] = (255, 255, 255)
+    ):
         """Renders text overlay on the screen."""
         text_surface = self.font.render(text, True, color)
         self.screen.blit(text_surface, position)
@@ -63,6 +67,7 @@ class LunarLanderVisualizer:
         """Quits the Pygame environment."""
         pygame.quit()
 
+
 def load_model(filename: Path, n_observations: int, n_actions: int) -> torch.nn.Module:
     """
     Loads a PolicyNetwork with the given parameters.
@@ -77,7 +82,7 @@ def load_model(filename: Path, n_observations: int, n_actions: int) -> torch.nn.
     """
     try:
         model = PolicyNetwork(n_observations, n_actions)
-        model.load_state_dict(torch.load(filename, map_location=torch.device('cpu'),weights_only=True))
+        model.load_state_dict(torch.load(filename, map_location=torch.device("cpu"), weights_only=True))
         model.eval()
         return model
     except Exception as e:
@@ -137,12 +142,7 @@ def run_lunar_lander(model: torch.nn.Module, render_fps: int = 20):
     visualizer.quit()
 
 
-
-def benchmark_model(
-    model: torch.nn.Module,
-    n_episodes: int = 100,
-    max_steps: int = 1000
-):
+def benchmark_model(model: torch.nn.Module, n_episodes: int = 100, max_steps: int = 1000):
     """
     Benchmarks the model over multiple episodes and computes average performance metrics.
 
@@ -188,15 +188,11 @@ def benchmark_model(
     avg_steps = np.mean(total_steps)
     avg_efficiency = np.mean(score_efficiencies)
 
-    return {
-        "Average Reward": avg_reward,
-        "Average Steps": avg_steps,
-        "Average Efficiency": avg_efficiency
-    }
+    return {"Average Reward": avg_reward, "Average Steps": avg_steps, "Average Efficiency": avg_efficiency}
 
 
 if __name__ == "__main__":
-    MODEL_FILE_PATH = Path("output/policy_network_lunar_lander_v3_bs_16_2024-12-04_03-50-55.pth")
+    MODEL_FILE_PATH = Path("output/dqn_policy_network_lunar_lander_v3_2024-12-02_19-36-49.pth")
 
     # Initialize the environment to get observation and action space sizes
     env = gym.make("LunarLander-v3")
@@ -212,7 +208,5 @@ if __name__ == "__main__":
     # print("\nBenchmark Results:")
     # for metric, value in metrics.items():
     #     print(f"{metric}: {value:.2f}")
-
-
 
     run_lunar_lander(policy_net)
